@@ -136,9 +136,18 @@ def to_b64(data):
     return base64.b64encode(json.dumps(data).encode("utf-8")).decode("utf-8")
 
 
-def from_b64(data):
-    return json.loads(base64.b64decode(data.encode("utf-8")).decode("utf-8"))
-
+def from_b64(column_names):
+    """
+    Decode base64 encoded column names.
+    
+    Args:
+        column_names (str): Base64 encoded column names.
+        
+    Returns:
+        list: Decoded column names.
+    """
+    column_names = from_b64(column_names)
+    ...
 
 def call_prompt_on_dataframe(df, prompt, **kwargs):
     names = retrieve_name(df)
@@ -302,7 +311,10 @@ def validate_pycode_result(result):
                 )
     except SyntaxError:
         logging.warning("Syntax error in suggestion -- might not work directly")
-
+    except ImportError as e:
+        logging.warning(f"Error importing module: {e}")
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
 
 @pd.api.extensions.register_dataframe_accessor("sketch")
 class SketchHelper:
