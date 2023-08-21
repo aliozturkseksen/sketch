@@ -1,6 +1,7 @@
-[build-system]
+import setuptools
+
 requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
-build-backend = "setuptools.build_meta"
+build-backend == "setuptools.build_meta"
 
 [project]
 name = "sketch"
@@ -27,20 +28,3 @@ dynamic = ["version"]
 [project.optional-dependencies]
 local = ["lambdaprompt[local,<2.0.0]"]
 all = ["sketch[local]"]
-
-# Comment out the following line
-# legacy_tox_ini = """
-# [tox]
-# envlist = py38, py39, py310, py311
-
-# [gh-actions]
-# python =
-#     3.8: py38
-#     3.9: py39
-#     3.10: py310
-#     3.11: py311
-
-# [testenv]
-# deps = -r dev-requirements.txt
-# commands = python -m pytest tests
-# """
