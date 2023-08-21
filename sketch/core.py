@@ -16,7 +16,12 @@ from .references import (
     WikipediaTableColumn,
 )
 from .sketches import SketchBase
+import requests
 
+def download_file(url, destination_path):
+    response = requests.get(url)
+    with open(destination_path, "wb") as file:
+        file.write(response.content)
 SKETCHCACHE = "~/.cache/sketch/"
 
 # TODO: These object models are possibly different than the ones in api models
