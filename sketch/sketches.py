@@ -1,6 +1,6 @@
 import base64
 import json
-
+import numbers
 import datasketch
 import datasketches
 
@@ -137,8 +137,9 @@ class MinHash(SketchBase):
 class HyperLogLog(SketchBase):
     @active
     def add_row(self, row):
-        # TODO: ensure row is 'bytes'
-        self.data.update(str(row).encode("utf-8"))
+    if not isinstance(row, bytes):
+        raise TypeError("Row must be of type bytes")
+    self.data.update(row)
 
     @classmethod
     def from_series(cls, series):
@@ -203,10 +204,14 @@ class DS_KLL(DataSketchesSketchBase):
     sketch_class = datasketches.kll_floats_sketch
     init_args = (160,)
 
-    @active
-    def add_row(self, row):
-        if isinstance(row, (int, float)):
-            self.data.update(row)
+    
+
+     @active
+     def add_row(self, row):
+         if isinstance(row, numbers.Number):
+             self.data.update(row)
+         else:
+             raise TypeError("Row must be a number")
 
 
 class DS_Quantiles(DataSketchesSketchBase):
